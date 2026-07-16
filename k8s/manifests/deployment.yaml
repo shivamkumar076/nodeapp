@@ -1,16 +1,4 @@
-# ==========================================
-# PART 1: CONFIGMAP (App ki Settings / Notes)
-# ==========================================
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: nodejs-config
-data:
-  NODE_ENV: "production"
-  PORT: "3000"
-  MONGO_URI: "mongodb+srv://t4technoshivam_db_user:f7ACSIcRwCQEoUeL@nodeapp.98rm2vy.mongodb.net/"
 
----
 # ==========================================
 # PART 2: DEPLOYMENT (Node.js Workers)
 # ==========================================
@@ -33,7 +21,7 @@ spec:
       containers:
       - name: node-container
         # YAHAN APNI DOCKER IMAGE DALNA (Neeche note padhna)
-        image: docker.io/shivam843104/my-node-app:v1 
+        image: docker.io/shivam843104/my-node-app:latest
         ports:
         - containerPort: 3000  # Node.js app andar se isi port par sunti hai
         
@@ -41,6 +29,9 @@ spec:
         envFrom:
         - configMapRef:
             name: nodejs-config
+
+        - secretRef:
+            name: nodejs-secrets
             
         # Health check (K8s ko batane ke liye ki app zinda hai)
         livenessProbe:
