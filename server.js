@@ -8,6 +8,9 @@ app.use(express.json());
 // Routes
 const userRoutes = require("./routes/userRoutes");
 app.use("/api/users", userRoutes);
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
 
 // DB Connect
 mongoose.connect(process.env.MONGO_URI)
