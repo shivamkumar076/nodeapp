@@ -8,7 +8,7 @@ metadata:
 data:
   NODE_ENV: "production"
   PORT: "3000"
-  DATABASE_URL: "mongodb+srv://t4technoshivam_db_user:f7ACSIcRwCQEoUeL@nodeapp.98rm2vy.mongodb.net/"
+  MONGO_URI: "mongodb+srv://t4technoshivam_db_user:f7ACSIcRwCQEoUeL@nodeapp.98rm2vy.mongodb.net/"
 
 ---
 # ==========================================
