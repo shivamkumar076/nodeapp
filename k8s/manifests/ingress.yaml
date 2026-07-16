@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nodejs-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: nodeapp.local        # Tumhara domain name (local testing ke liye)
+    http:
+      paths:
+      - path: /                # Root URL par sab traffic bhejo
+        pathType: Prefix
+        backend:
+          service:
+            name: nodejs-service   # Pichli wali service ka naam
+            port:
+              number: 80           # Service ka port (80)

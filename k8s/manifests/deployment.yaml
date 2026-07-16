@@ -1,0 +1,68 @@
+# ==========================================
+# PART 1: CONFIGMAP (App ki Settings / Notes)
+# ==========================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nodejs-config
+data:
+  NODE_ENV: "production"
+  PORT: "3000"
+  DATABASE_URL: "mongodb+srv://t4technoshivam_db_user:f7ACSIcRwCQEoUeL@nodeapp.98rm2vy.mongodb.net/"
+
+---
+# ==========================================
+# PART 2: DEPLOYMENT (Node.js Workers)
+# ==========================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mera-node-app
+  labels:
+    app: nodejs-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nodejs-app
+  template:
+    metadata:
+      labels:
+        app: nodejs-app
+    spec:
+      containers:
+      - name: node-container
+        # YAHAN APNI DOCKER IMAGE DALNA (Neeche note padhna)
+        image: docker.io/shivam843104/my-node-app:latest 
+        ports:
+        - containerPort: 3000  # Node.js app andar se isi port par sunti hai
+        
+        # ConfigMap se settings inject karna
+        envFrom:
+        - configMapRef:
+            name: nodejs-config
+            
+        # Health check (K8s ko batane ke liye ki app zinda hai)
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+
+---
+# ==========================================
+# PART 3: SERVICE (Fixed Darwaza)
+# ==========================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-service
+spec:
+  type: NodePort
+  selector:
+    app: nodejs-app  # Deployment wale labels se match hona chahiye
+  ports:
+    - port: 80         # Service ka port (Cluster ke andar doosre pods isi se call karenge)
+      targetPort: 3000 # Traffic ko Node.js container ke 3000 port par bhejo
+      nodePort: 31000  # Bahar wale (Browser) is port se access karenge
