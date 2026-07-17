@@ -36,14 +36,13 @@ jobs:
           ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }}
           ${{ env.DOCKER_IMAGE }}:latest
 
-    - name: Update Kubernetes deployment
+    - name: Update Kubernetes deployment image tag
       run: |
         # YAML file mein image tag update karo
         sed -i "s|image:.*|image: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }}|g" k8s/manifests/deployment.yaml
-        
-        # Commit aur push karo
-        git config user.name "shivamkumar076"
-        git config user.email "shivamkumar776499@gmail.com"
-        git add k8s/manifests/deployment.yaml
-        git commit -m "Update image tag to ${{ env.DOCKER_TAG }}" || echo "No changes"
-        git push
+
+    - name: Auto Commit and Push changes
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: "chore: update image tag to ${{ env.DOCKER_TAG }}"
+        file_pattern: "k8s/manifests/deployment.yaml"
