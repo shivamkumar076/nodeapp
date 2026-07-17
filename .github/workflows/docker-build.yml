@@ -10,6 +10,9 @@ env:
   DOCKER_IMAGE: shivam843104/my-node-app # Apna Docker Hub username daalo
   DOCKER_TAG: ${{ github.sha }}  # Commit hash ko tag banao
 
+permissions:
+  contents: write  
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
