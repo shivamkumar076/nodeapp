@@ -19,6 +19,6 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Server Start
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on 1 port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on 2 port ${PORT}`));
 
 
