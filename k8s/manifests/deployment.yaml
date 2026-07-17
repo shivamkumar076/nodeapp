@@ -21,7 +21,7 @@ spec:
       containers:
       - name: node-container
         # YAHAN APNI DOCKER IMAGE DALNA (Neeche note padhna)
-        image: docker.io/shivam843104/my-node-app:latest
+        image: shivam843104/my-node-app:dff8dc4dabbcfb426f296530d2a3da389a2535a6
         ports:
         - containerPort: 3000  # Node.js app andar se isi port par sunti hai
         
